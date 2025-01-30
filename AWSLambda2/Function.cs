@@ -1,7 +1,12 @@
 using Amazon.Lambda.Core;
 using Amazon.Lambda.S3Events;
 using Amazon.S3;
+using Amazon.S3.Model;
 using Amazon.S3.Util;
+using Amazon.SQS;
+using Amazon.SQS.Model;
+using Newtonsoft.Json;
+
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
@@ -11,6 +16,10 @@ namespace AWSLambda2;
 public class Function
 {
     IAmazonS3 S3Client { get; set; }
+    private static readonly AmazonSQSClient sqsClient = new AmazonSQSClient();
+    //private const string QueueUrl = "https://sqs.<region>.amazonaws.com/<account-id>/<queue-name>";
+    private const string QueueUrl = "http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/MyQueue";//todo - configurable
+    //private const string QueueUrl = "http://localhost:4566/000000000000/MyQueue";
 
     /// <summary>
     /// Default constructor. This constructor is used by Lambda to construct the instance. When invoked in a Lambda environment
@@ -53,6 +62,8 @@ public class Function
             {
                 var response = await this.S3Client.GetObjectMetadataAsync(s3Event.Bucket.Name, s3Event.Object.Key);
                 context.Logger.LogInformation(response.Headers.ContentType);
+
+
             }
             catch (Exception e)
             {
@@ -61,6 +72,30 @@ public class Function
                 context.Logger.LogError(e.StackTrace);
                 throw;
             }
+
+            try
+            {
+                var message = new
+                {
+                    bucket = s3Event.Bucket.Name,
+                    key = s3Event.Object.Key
+                };
+
+                var sendMessageRequest = new SendMessageRequest
+                {
+                    QueueUrl = QueueUrl,
+                    MessageBody = JsonConvert.SerializeObject(message)
+                };
+                var response = await sqsClient.SendMessageAsync(sendMessageRequest);
+                context.Logger.LogLine($"Message sent to SQS with ID: {response.MessageId}");
+            }
+            catch (Exception ex)
+            {
+                context.Logger.LogLine($"Error sending message to SQS: {ex.Message}");
+            }
+
         }
     }
+
+
 }
