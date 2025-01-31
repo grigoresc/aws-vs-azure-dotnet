@@ -16,10 +16,8 @@ namespace AWSLambda2;
 public class Function
 {
     IAmazonS3 S3Client { get; set; }
-    private static readonly AmazonSQSClient sqsClient = new AmazonSQSClient();
-    //private const string QueueUrl = "https://sqs.<region>.amazonaws.com/<account-id>/<queue-name>";
-    private const string QueueUrl = "http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000/MyQueue";//todo - configurable
-    //private const string QueueUrl = "http://localhost:4566/000000000000/MyQueue";
+    QueueService queueService { get; set; }
+
 
     /// <summary>
     /// Default constructor. This constructor is used by Lambda to construct the instance. When invoked in a Lambda environment
@@ -29,6 +27,8 @@ public class Function
     public Function()
     {
         S3Client = new AmazonS3Client();
+        queueService = new QueueService();
+
     }
 
     /// <summary>
@@ -81,13 +81,9 @@ public class Function
                     key = s3Event.Object.Key
                 };
 
-                var sendMessageRequest = new SendMessageRequest
-                {
-                    QueueUrl = QueueUrl,
-                    MessageBody = JsonConvert.SerializeObject(message)
-                };
-                var response = await sqsClient.SendMessageAsync(sendMessageRequest);
-                context.Logger.LogLine($"Message sent to SQS with ID: {response.MessageId}");
+                var msgId = await queueService.SendMessageAsync(JsonConvert.SerializeObject(message));
+                
+                context.Logger.LogLine($"Message sent to SQS with ID: {msgId}");
             }
             catch (Exception ex)
             {
