@@ -2,6 +2,9 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using Azure.Storage.Queues;
+using Azure.Storage.Queues.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace AzureFunctionApp2
 {
@@ -20,6 +23,10 @@ namespace AzureFunctionApp2
             using var blobStreamReader = new StreamReader(stream);
             var content = await blobStreamReader.ReadToEndAsync();
             _logger.LogInformation($"C# Blob trigger function Processed blob\n Name: {name}");
+
+            var queueSrv = new QueueService();
+            queueSrv.SendMessage($"new image - {name}");//todo - aync maybe?
+
         }
     }
 }
