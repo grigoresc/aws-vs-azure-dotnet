@@ -8,7 +8,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0CCDBAC8-36AB-4DF6-975F-3B3E95A31503}"
 	ProjectSection(SolutionItems) = preProject
 		steps-aws.md = steps-aws.md
+		steps-azure.md = steps-azure.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureFunctionApp2", "AzureFunctionApp2\AzureFunctionApp2.csproj", "{AD29409F-E842-483B-94D9-4DB23EF897A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +23,10 @@ Global
 		{D6AFBE34-C171-43B0-B7CD-0A771FE606E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6AFBE34-C171-43B0-B7CD-0A771FE606E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6AFBE34-C171-43B0-B7CD-0A771FE606E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD29409F-E842-483B-94D9-4DB23EF897A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD29409F-E842-483B-94D9-4DB23EF897A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD29409F-E842-483B-94D9-4DB23EF897A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD29409F-E842-483B-94D9-4DB23EF897A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
