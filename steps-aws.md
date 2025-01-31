@@ -47,7 +47,7 @@ awslocal s3api list-buckets
 awslocal s3api put-object \
   --bucket sample-bucket \
   --key image.jpg \
-  --body image.jpg
+  --body ../assets/image.jpg
 ```
 
 trigger lambdas by s3 events

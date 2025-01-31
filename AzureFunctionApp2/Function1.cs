@@ -1,3 +1,4 @@
+using AzureFunctionApp2.Services;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
