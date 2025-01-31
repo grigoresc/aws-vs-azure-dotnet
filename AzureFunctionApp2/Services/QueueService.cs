@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using Azure.Storage.Queues;
+﻿using Azure.Storage.Queues;
 
-namespace AzureFunctionApp2
+namespace AzureFunctionApp2.Services
 {
     public class QueueService
     {
